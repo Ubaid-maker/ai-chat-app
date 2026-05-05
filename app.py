@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 client = Groq(
     api_key=os.environ.get(
-        "GROQ_API_KEY", "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"
+        "GROQ_API_KEY", "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"
     )
 )
 
