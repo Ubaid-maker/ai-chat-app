@@ -1,33 +1,27 @@
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, render_template, request, jsonify
 from groq import Groq
 
 app = Flask(__name__)
 
-# Initialize Groq client using environment variable
-client = Groq(api_key=os.environ.get("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"))
+client = Groq(api_key="your_groq_key_here")
 
-@app.route('/')
+@app.route("/")
 def home():
-    return jsonify({"message": "Flask app deployed successfully on Vercel!"})
+    return render_template("index.html")
 
-@app.route('/chat', methods=['POST'])
-def chat():
-    data = request.get_json()
-    user_input = data.get("prompt", "")
-
-    if not user_input:
-        return jsonify({"error": "No prompt provided"}), 400
-
+@app.route("/chat", methods=["POST"])
+def chat_response():
     try:
+        user_message = request.json.get("message")
         response = client.chat.completions.create(
-            model="mixtral-8x7b-32768",
-            messages=[{"role": "user", "content": user_input}]
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": user_message}]
         )
-        reply = response.choices[0].message.content
-        return jsonify({"reply": reply})
+        return jsonify({"response": response.choices[0].message.content})
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"response": f"Error: {str(e)}"})
 
-if __name__ == '__main__':
-    app.run()
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
