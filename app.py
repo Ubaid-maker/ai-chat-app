@@ -4,7 +4,7 @@ from groq import Groq
 
 app = Flask(__name__)
 
-client = Groq(api_key="your_groq_key_here")
+client = Groq(api_key="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")
 
 @app.route("/")
 def home():
@@ -24,4 +24,4 @@ def chat_response():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)
