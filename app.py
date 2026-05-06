@@ -4,7 +4,7 @@ from groq import Groq
 
 app = Flask(__name__)
 
-client = Groq(api_key="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")
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 @app.route("/")
 def home():
